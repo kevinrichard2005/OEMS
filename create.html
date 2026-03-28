@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Create New Course - ExamElite{% endblock %}
+
+{% block content %}
+<div class="section-full">
+    <div class="glass-card" style="max-width: 600px; width: 100%;">
+        <div class="mb-5 d-flex align-items-center">
+            <a href="{{ url_for('course.index') }}" class="btn btn-sm btn-outline-dark rounded-circle me-3"
+                style="width: 40px; height: 40px; padding: 0; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <div>
+                <h3 class="fw-bold mb-0">Create New Course</h3>
+                <p class="text-muted small mb-0">Fill in the details to launch your new course.</p>
+            </div>
+        </div>
+
+        <form method="POST">
+            <div class="mb-4">
+                <label for="name" class="form-label small fw-bold text-uppercase">Course Name</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-transparent border-end-0"><i
+                            class="fas fa-bookmark text-primary"></i></span>
+                    <input type="text" class="form-control form-control-custom border-start-0" id="name" name="name"
+                        placeholder="e.g. Advanced Web Development" required>
+                </div>
+            </div>
+
+            <div class="mb-5">
+                <label for="description" class="form-label small fw-bold text-uppercase">Course Description</label>
+                <textarea class="form-control form-control-custom" id="description" name="description" rows="4"
+                    placeholder="What will students learn in this course?"></textarea>
+            </div>
+
+            <div class="d-flex gap-3 mt-4">
+                <button type="submit" class="btn btn-premium flex-grow-1 py-3">
+                    <i class="fas fa-rocket me-2"></i>Create Course
+                </button>
+                <a href="{{ url_for('course.index') }}"
+                    class="btn btn-outline-dark px-4 py-3 rounded-pill text-decoration-none d-flex align-items-center justify-content-center">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

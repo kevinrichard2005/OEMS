@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}Explore Courses - ExamElite{% endblock %}
+
+{% block content %}
+<div class="py-5">
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <div>
+            <h2 class="fw-bold mb-0">Courses</h2>
+            <p class="text-muted">Master your skills with our curated courses.</p>
+        </div>
+        {% if current_user.role in ['admin', 'teacher'] %}
+        <a href="{{ url_for('course.create') }}" class="btn btn-premium px-4 py-2">
+            <i class="fas fa-plus me-2"></i>Create New Course
+        </a>
+        {% endif %}
+    </div>
+
+    <div class="responsive-grid">
+        {% for course in courses %}
+        <div class="glass-card d-flex flex-column h-100">
+            <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="icon-shape bg-soft-primary rounded-circle p-2"
+                        style="background: rgba(66, 135, 245, 0.1);">
+                        <i class="fas fa-graduation-cap text-primary"></i>
+                    </div>
+                    {% if current_user.role == 'student' and course in current_user.enrolled_courses %}
+                    <span class="badge bg-soft-success text-success rounded-pill px-3 py-2"
+                        style="background: rgba(40, 167, 69, 0.1);">Enrolled</span>
+                    {% endif %}
+                </div>
+                <h4 class="fw-bold mb-2">{{ course.name }}</h4>
+                <p class="text-muted small mb-3 text-truncate-2">{{ course.description }}</p>
+                <div class="d-flex align-items-center mt-auto pt-3 border-top">
+                    <div class="rounded-circle bg-soft-dark p-2 me-2"
+                        style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.05);">
+                        <span class="small fw-bold">{{ course.teacher.username[:1].upper() }}</span>
+                    </div>
+                    <small class="text-muted">Instructor: <span class="fw-bold text-dark">{{ course.teacher.username
+                            }}</span></small>
+                </div>
+            </div>
+
+            <div class="mt-auto">
+                {% if current_user.role == 'student' %}
+                {% if course in current_user.enrolled_courses %}
+                <a href="{{ url_for('course.view', course_id=course.id) }}" class="btn btn-premium w-100 py-3">View
+                    Course</a>
+                {% else %}
+                <a href="{{ url_for('course.enroll', course_id=course.id) }}"
+                    class="btn btn-outline-primary w-100 py-3 rounded-pill">Enroll Now</a>
+                {% endif %}
+                {% else %}
+                <div class="d-flex gap-2">
+                    <a href="{{ url_for('course.view', course_id=course.id) }}"
+                        class="btn btn-outline-dark flex-grow-1 py-2 rounded-pill">View</a>
+                    <a href="{{ url_for('course.edit', course_id=course.id) }}"
+                        class="btn btn-premium flex-grow-1 py-2">Manage</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12">
+            <div class="glass-card text-center py-5">
+                <i class="fas fa-book-reader fa-4x text-muted mb-4 opacity-50"></i>
+                <h3>No Courses Found</h3>
+                <p class="text-muted">Stay tuned! Exciting new courses are on their way.</p>
+                {% if current_user.role in ['admin', 'teacher'] %}
+                <a href="{{ url_for('course.create') }}" class="btn btn-premium px-5 py-3 mt-3">Create First Course</a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
