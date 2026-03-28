@@ -1,4 +1,9 @@
 import os
+import sys
+
+# Add the project root to sys.path
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
 from flask import Flask, render_template
 from config import Config
 from extensions import db, login_manager, migrate
@@ -38,7 +43,7 @@ def create_app(config_class=Config):
     app.register_blueprint(taking_bp, url_prefix='/taking')
     app.register_blueprint(result_bp, url_prefix='/result')
     app.register_blueprint(analytics_bp, url_prefix='/analytics')
-    app.register_blueprint(profile_bp, url_prefix='/profile')
+    app.register_blueprint(profile_blueprint=profile_bp, url_prefix='/profile')
 
     @app.route('/')
     def index():
